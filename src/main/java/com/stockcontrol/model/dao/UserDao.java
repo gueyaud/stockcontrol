@@ -1,9 +1,16 @@
 package com.stockcontrol.model.dao;
 
+import java.util.List;
+
 import com.stockcontrol.model.businessobjects.User;
 
 public interface UserDao {
 
 	User findByUserName(String username);
-
+	
+	List<User> listAllUsers();
+	
+	User getUserById(int i);
+	
+	User createUser(User user);
 }

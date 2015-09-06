@@ -6,11 +6,13 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.stockcontrol.model.businessobjects.User;
 import com.stockcontrol.model.dao.UserDao;
 
 @Repository
+@Transactional
 public class UserDaoImpl implements UserDao {
 
 	@Autowired
@@ -34,5 +36,34 @@ public class UserDaoImpl implements UserDao {
 		}
 
 	}
+
+	public List<User> listAllUsers() {
+		List<User> users = new ArrayList<User>();
+
+		users = sessionFactory.getCurrentSession().createQuery("from User u order by u.username").list();
+		for (User u : users) {
+		    u.getUserRole().size();
+		}
+		return users;
+	}
+	
+	public User getUserById(int i) {
+		return listAllUsers().get(i);
+	}
+	
+	public User createUser(User user){
+	
+		//Add new Employee object
+	    User userPersistant = new User();
+	    userPersistant.setUsername(user.getUsername());
+	    userPersistant.setPassword(user.getPassword());
+	    userPersistant.setEnabled(Boolean.TRUE);
+	     
+	    //Save the employee in database
+	    sessionFactory.getCurrentSession().save(user);
+	    
+	    return user;
+	}
+
 
 }

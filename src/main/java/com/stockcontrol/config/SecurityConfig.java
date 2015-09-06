@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -28,15 +29,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
-		http.authorizeRequests().antMatchers("/admin/**")
-			.access("hasRole('ROLE_ADMIN')").and().formLogin()
-			.loginPage("/login").failureUrl("/login?error")
-				.usernameParameter("username")
-				.passwordParameter("password")
-				.and().logout().logoutSuccessUrl("/login?logout")
-				.and().csrf()
-				.and().exceptionHandling().accessDeniedPage("/403");
+		http.authorizeRequests().antMatchers("**").permitAll();
+//		http
+//			.httpBasic()
+//			.and()
+//			.authorizeRequests()
+//				.antMatchers("/resources/**", "/login.html", "/**.js", "/user", "/logout" )
+//				.permitAll()
+//				.antMatchers("/users/**").hasRole("ADMIN")
+//				.anyRequest().authenticated()
+//				.and()
+//				.formLogin()
+//					.defaultSuccessUrl("/index.html")
+//					.loginPage("/login.html")
+//					.loginProcessingUrl("/authenticate")
+//					.usernameParameter("username")
+//					.passwordParameter("password")
+//					//.successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
+//				.and()
+//				.logout()
+//					.logoutUrl("/logout")
+//					.logoutSuccessUrl("/login.html");
+		
+		
+//		http.authorizeRequests().antMatchers("/admin/**")
+//			.access("hasRole('ROLE_ADMIN')").and().formLogin()
+//			.loginPage("/login.html").permitAll().failureUrl("/login?error")
+//				.usernameParameter("username")
+//				.passwordParameter("password")
+//				.and().logout().logoutSuccessUrl("/login?logout")
+//				.and().csrf();
+//				.and().exceptionHandling().accessDeniedPage("/403");
 	}
 	
 	@Bean
