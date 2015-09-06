@@ -29,27 +29,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("**").permitAll();
-//		http
-//			.httpBasic()
-//			.and()
-//			.authorizeRequests()
-//				.antMatchers("/resources/**", "/login.html", "/**.js", "/user", "/logout" )
-//				.permitAll()
-//				.antMatchers("/users/**").hasRole("ADMIN")
-//				.anyRequest().authenticated()
-//				.and()
-//				.formLogin()
-//					.defaultSuccessUrl("/index.html")
-//					.loginPage("/login.html")
-//					.loginProcessingUrl("/authenticate")
-//					.usernameParameter("username")
-//					.passwordParameter("password")
-//					//.successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
-//				.and()
-//				.logout()
-//					.logoutUrl("/logout")
-//					.logoutSuccessUrl("/login.html");
+//		http.authorizeRequests().antMatchers("**").permitAll();
+		http
+			.httpBasic()
+			.and()
+			.authorizeRequests()
+				.antMatchers("/resources/**", "/login.html", "/**.js", "/user", "/logout" )
+				.permitAll()
+				.antMatchers("/users/**").hasRole("ADMIN")
+				.antMatchers("users.html").hasRole("ADMIN")
+				.anyRequest().authenticated()
+				.and()
+				.formLogin()
+					.defaultSuccessUrl("/index.html")
+					.loginPage("/login.html")
+					.loginProcessingUrl("/authenticate")
+					.usernameParameter("username")
+					.passwordParameter("password")
+					//.successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
+				.and()
+				.logout()
+					.logoutUrl("/logout")
+					.logoutSuccessUrl("/login.html");
 		
 		
 //		http.authorizeRequests().antMatchers("/admin/**")
