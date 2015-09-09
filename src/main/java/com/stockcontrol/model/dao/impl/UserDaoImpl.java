@@ -3,6 +3,7 @@ package com.stockcontrol.model.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -63,6 +64,19 @@ public class UserDaoImpl implements UserDao {
 	    sessionFactory.getCurrentSession().save(user);
 	    
 	    return user;
+	}
+
+	public void deleteUser(User user) {
+		sessionFactory.getCurrentSession().delete(user);
+	}
+
+	public void deleteUserByUsername(String username) {
+		Query queryRoles = sessionFactory.getCurrentSession().createQuery("delete UserRole where user.username = :username");
+		queryRoles.setParameter("username", username);
+		queryRoles.executeUpdate();
+		Query query = sessionFactory.getCurrentSession().createQuery("delete User where username = :username");
+		query.setParameter("username", username);
+		query.executeUpdate();
 	}
 
 

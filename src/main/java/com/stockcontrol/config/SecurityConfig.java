@@ -11,7 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -50,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.logout()
 					.logoutUrl("/logout")
-					.logoutSuccessUrl("/login.html");
+					.logoutSuccessUrl("/login.html")
+					.and().csrf().csrfTokenRepository(csrfTokenRepository()).and().addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
 		
 		
 //		http.authorizeRequests().antMatchers("/admin/**")
@@ -67,6 +70,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder(){
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		return encoder;
+	}
+	
+	private CsrfTokenRepository csrfTokenRepository() {
+	  HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+	  repository.setHeaderName("X-XSRF-TOKEN");
+	  return repository;
 	}
 	
 }
